@@ -1,8 +1,8 @@
 import { AccessButton } from "../../components/AccessButton";
 import { assets } from "../../styles/assets";
-import { LoginDiv, LoginContainer, FieldsDiv } from "./styles";
+import { FieldsDiv, LoginContainer, LoginDiv } from "../Main/styles";
 
-export function MainPage() {
+export function Cadastro() {
   return (
     <>
       <LoginContainer>
@@ -17,10 +17,13 @@ export function MainPage() {
               <label>Senha:</label>
               <input />
             </div>
+            <div className="input">
+              <label>Confirme sua senha:</label>
+              <input />
+            </div>
             <div className="btns">
-              <AccessButton path="/">Entrar</AccessButton>
-              <p>Não possui uma conta?</p>
-              <AccessButton path="/cadastro">Cadastrar-se</AccessButton>
+              <AccessButton path="/cadastro">Cadastrar</AccessButton>
+              <AccessButton path="/">Voltar</AccessButton>
             </div>
           </FieldsDiv>
         </LoginDiv>

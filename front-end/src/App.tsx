@@ -1,7 +1,16 @@
-import { MainPage } from "./pages/Main";
+import { BrowserRouter } from "react-router-dom";
+import { Raizes } from "./routes";
+import { EstiloGlobal } from "./styles/mainstyle";
 
 function App() {
-  return <MainPage />;
+  return (
+    <>
+      <EstiloGlobal />
+      <BrowserRouter>
+        <Raizes />
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;
