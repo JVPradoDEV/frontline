@@ -1,5 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
 import { assets } from "./assets";
+import { colors } from "./colors";
 
 export const EstiloGlobal = createGlobalStyle`
     *{
@@ -11,9 +12,11 @@ export const EstiloGlobal = createGlobalStyle`
     }
 
     body{ 
-        background-image: url(${assets.backgroundMain});
-        background-size: cover;
-        background-position: center;
+        background-image: url(${assets.backgroundMainAlt});
+        background-size: contain;
+        background-position: right;
+        background-repeat: no-repeat;
+        background-color: ${colors.black};
     }
 `;
 

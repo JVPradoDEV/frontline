@@ -4,8 +4,8 @@ import { colors } from "../../styles/colors";
 import { AccessBTN } from "../../components/AccessButton/styles";
 
 export const LoginContainer = styled(SideContainer)`
-  background-color: ${colors.white};
-  box-shadow: 2px 0px 2px ${colors.black};
+  background-color: ${colors.black};
+  box-shadow: 2px 0px 2px ${colors.white};
   width: 35%;
   height: 100vh;
 
@@ -20,8 +20,9 @@ export const LoginDiv = styled.div`
 `;
 
 export const FieldsDiv = styled.div`
-  background-color: ${colors.white};
-  border: solid 1px ${colors.gray};
+  color: ${colors.white};
+  background-color: ${colors.black};
+  border: solid 1px ${colors.white};
   border-radius: 24px;
   padding: 28px;
   font-weight: 500;
@@ -31,7 +32,7 @@ export const FieldsDiv = styled.div`
     padding-bottom: 22px;
 
     input {
-      background-color: ${colors.darkGray};
+      background-color: ${colors.white};
       border: none;
       border-radius: 12px;
       height: 35px;

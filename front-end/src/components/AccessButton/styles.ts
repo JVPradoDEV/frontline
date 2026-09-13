@@ -4,6 +4,7 @@ import { colors } from "../../styles/colors";
 
 export const AccessBTN = styled(Link)`
   background-color: ${colors.black};
+  border: solid 1px ${colors.white};
   color: ${colors.white};
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -17,4 +18,10 @@ export const AccessBTN = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: ${colors.white};
+    color: ${colors.black};
+  }
 `;

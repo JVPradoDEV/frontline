@@ -1,4 +1,6 @@
 import { FeedSidebar } from "../../components/Feed/FeedSidebar";
+import { CreatePost } from "../../components/Feed/CreatePost";
+import { PostList } from "../../components/Feed/PostList";
 import { FeedGlobalStyle, FeedLayout, MainContent } from "./styles";
 
 export function FeedPage() {
@@ -7,7 +9,10 @@ export function FeedPage() {
       <FeedGlobalStyle />
       <FeedLayout>
         <FeedSidebar />
-        <MainContent></MainContent>
+        <MainContent>
+          <CreatePost />
+          <PostList />
+        </MainContent>
       </FeedLayout>
     </>
   );
