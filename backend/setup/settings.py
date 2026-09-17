@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from pathlib import Path
+import dj_database_url
 import os
 
 load_dotenv()
@@ -65,14 +66,11 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT')
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=0,       # Mantém a conexão aberta por até 10 minutos (bom para performance)
+        ssl_require=True        # Exige SSL (necessário para o Supabase)
+    )
 }
 
 
