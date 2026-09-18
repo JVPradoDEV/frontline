@@ -11,6 +11,7 @@ class UsuarioView(APIView):
     """
     View para ver um Usuário passado na URL
     Métodos - GET
+    Argumentos - username do usuário
     """
     permission_classes = [IsAuthenticated]
 
@@ -47,6 +48,7 @@ class ListaSeguidores(ListAPIView):
     """
     View para listar seguidores de um usuário
     Métodos - GET
+    Argumentos - username do usuário
     """
 
     serializer_class = UsuarioSerializer
@@ -56,4 +58,30 @@ class ListaSeguidores(ListAPIView):
             username=self.kwargs['username']
         ).seguidores.all()
 
-    
+
+class ListaSeguindo(ListAPIView):
+    """
+    View para listar os usuários que um usuário segue
+    Métodos - GET
+    Argumentos - username do usuário na URL
+    """
+
+    serializer_class = UsuarioSerializer
+
+    def get_queryset(self):
+        return Usuario.objects.get(
+            username=self.kwargs['username']
+        ).seguindo.all()
+
+
+class SeguirView(APIView):
+    """
+    View para seguir alguém
+    Métodos - POST
+    Argumentos - username do usuario e username do usuario a seguir
+    """
+
+    def post(self, request):
+        usuario_alvo =  Usuario.objects(request.data["alvo"])
+
+        usuario = 
