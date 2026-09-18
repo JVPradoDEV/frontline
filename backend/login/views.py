@@ -74,14 +74,14 @@ class ListaSeguindo(ListAPIView):
         ).seguindo.all()
 
 
-class SeguirView(APIView):
-    """
-    View para seguir alguém
-    Métodos - POST
-    Argumentos - username do usuario e username do usuario a seguir
-    """
+# class SeguirView(APIView):
+#     """
+#     View para seguir alguém
+#     Métodos - POST
+#     Argumentos - username do usuario e username do usuario a seguir
+#     """
 
-    def post(self, request):
-        usuario_alvo =  Usuario.objects(request.data["alvo"])
+#     def post(self, request):
+#         usuario_alvo =  Usuario.objects(request.data["alvo"])
 
-        usuario = 
+#         usuario = 
