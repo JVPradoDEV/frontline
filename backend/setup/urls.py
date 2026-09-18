@@ -1,6 +1,6 @@
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
-from login.views import UsuarioView, CadastroView
+from login.views import UsuarioView, CadastroView, ListaSeguidores
 from django.urls import path, include
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -15,8 +15,10 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
 
     path('', include(router.urls)),
-    path('usuarios/', UsuarioView.as_view(), name='usuarios'),
+    path('usuarios/<str:username>/', UsuarioView.as_view(), name='usuarios'),
     path('cadastro/', CadastroView.as_view(), name='cadastro'),
+
+    path('<str:username>/seguidores/', ListaSeguidores.as_view()),
 
     #JWT
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
