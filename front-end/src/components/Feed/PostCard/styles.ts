@@ -5,7 +5,7 @@ export const PostCardContainer = styled.article`
   display: flex;
   gap: 12px;
   padding: 16px;
-  border-bottom: 1px solid #2f2f2f;
+  border-bottom: 1px solid ${colors.anotherHim};
   cursor: pointer;
   transition: background-color 0.15s;
 

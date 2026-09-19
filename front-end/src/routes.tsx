@@ -1,16 +1,31 @@
-import { Route, Routes } from "react-router-dom";
-import { MainPage } from "./pages/Main";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { LoginPage } from "./pages/Login";
 import { Cadastro } from "./pages/Cadastro";
 import { FeedPage } from "./pages/Feed";
 import { PostDetailPage } from "./pages/PostDetail";
+import { ProfilePage } from "./pages/ProfilePage";
+import { EncontrarPage } from "./pages/Buscar";
+import { selectIsAuthenticated } from "./store/slices/authSlice";
+
+function ProtectedRoute() {
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
+}
 
 export function Raizes() {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="/cadastro" element={<Cadastro />} />
-      <Route path="/feed" element={<FeedPage />} />
-      <Route path="/feed/:postId" element={<PostDetailPage />} />
+
+      <Route element={<ProtectedRoute />}>
+        <Route path="/feed" element={<FeedPage />} />
+        <Route path="/feed/:postId" element={<PostDetailPage />} />
+        <Route path="/perfil/:username" element={<ProfilePage />} />
+        <Route path="/encontrar" element={<EncontrarPage />} />
+      </Route>
     </Routes>
   );
 }

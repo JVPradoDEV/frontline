@@ -13,21 +13,7 @@ import {
   CommentsSection,
   GlobalBackground,
 } from "./styles";
-
-const BackIcon = () => (
-  <svg
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="15,18 9,12 15,6" />
-  </svg>
-);
+import { BackIcon } from "../../styles/svgs";
 
 export function PostDetailPage() {
   const { postId } = useParams<{ postId: string }>();

@@ -8,13 +8,13 @@ export const GlobalBackground = styled.div`
   z-index: -1;
 `;
 
-export const PostDetailLayout = styled.div`
+export const ProfileLayout = styled.div`
   display: flex;
-  justify-content: center;
   min-height: 100vh;
+  justify-content: center;
 `;
 
-export const PostDetailMain = styled.main`
+export const ProfileMain = styled.main`
   margin-left: 220px;
   flex: 1;
   min-height: 100vh;
@@ -23,7 +23,7 @@ export const PostDetailMain = styled.main`
   border-right: 1px solid ${colors.anotherHim};
 `;
 
-export const PostDetailHeader = styled.div`
+export const ProfilePageHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
@@ -58,9 +58,4 @@ export const PageTitle = styled.h2`
   font-size: 18px;
   font-weight: 700;
   color: ${colors.white};
-`;
-
-export const CommentsSection = styled.section`
-  display: flex;
-  flex-direction: column;
 `;

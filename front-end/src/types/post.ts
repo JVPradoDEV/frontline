@@ -17,3 +17,12 @@ export interface PostData {
   avatarColor?: string;
   comments: CommentData[];
 }
+
+export interface UserProfile {
+  id: number;
+  userName: string;
+  userHandle: string;
+  avatarColor: string;
+  followersCount: number;
+  followingCount: number;
+}

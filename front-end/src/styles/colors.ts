@@ -4,4 +4,6 @@ export const colors = {
   darkGray: "#EBEAEA",
   black: "#000",
   anotherHim: "#2f2f2f",
+  mockColor: "#555",
+  lightRed: "#e05252",
 };
