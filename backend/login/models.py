@@ -7,3 +7,6 @@ class Usuario(AbstractUser):
     nickname =  models.CharField(max_length=35, blank=False, null=False, unique=False)
     foto = models.ImageField()
     seguidores = models.ManyToManyField('self', symmetrical=False, related_name='seguindo', blank=True)
+
+    def __str__(self):
+        return self.username
