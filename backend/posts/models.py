@@ -14,7 +14,7 @@ class Post(models.Model):
 
 class Comentario(models.Model):
     autor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='comentarios')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comentarios')
     conteudo = models.CharField(max_length=280, null=False, blank=False)
     likes = models.ManyToManyField(Usuario, blank=True)
     data_criacao = models.DateTimeField(auto_now_add=True)

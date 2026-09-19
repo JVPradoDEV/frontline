@@ -1,5 +1,6 @@
 from login.models import Usuario
 from login.serializer import UsuarioSerializer, CadastroSerializer
+from posts.models import Post, Comentario
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -67,6 +68,37 @@ class SeguirView(APIView):
         print(usuario_alvo.seguidores.all())
     
         return Response(status=200)
+
+
+# class LikeView(APIView):
+#     """
+#     View para dar like em post ou comentário
+#     Métodos - POST
+#     Argumentos - username do usuario e id do post ou comentário
+#     """
+
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request):
+#         tipo = request.data['tipo']
+#         id = request.data['id']
+#         if tipo 
+
+
+#         post_alvo = Post.objects.get(username=request.data["alvo"])
+
+#         if usuario_alvo != request.user:
+#             usuario_alvo.seguidores.add(request.user)
+
+#             return Response(status=200)
+
+#     def delete(self, request):
+#         usuario_alvo = Usuario.objects.get(username=request.data["alvo"])
+#         usuario_alvo.seguidores.remove(request.user)
+#         print(usuario_alvo.seguidores.all())
+    
+#         return Response(status=200)
+
 
 
 class ListaSeguidores(ListAPIView):
