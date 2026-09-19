@@ -1,6 +1,6 @@
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
-from login.views import UsuarioView, CadastroView, ListaSeguidores, ListaSeguindo, SeguirView, UsuarioClienteView
+from login.views import UsuarioView, CadastroView, ListaSeguidores, ListaSeguindo, SeguirView, UsuarioClienteView, LikeView, BuscarUsuarioView
 from posts.views import FeedView, PostViewSet, ComentarioViewSet, ListaComentariosPost, ListaPostsUsuarioCliente, ListaPostsUsuario
 from django.urls import path, include
 
@@ -20,6 +20,7 @@ urlpatterns = [
     
     path('cadastro/', CadastroView.as_view(), name='cadastro'),
 
+    path('like/', LikeView.as_view(), name='gostar'),
     path('seguir/', SeguirView.as_view(), name='seguir'),
 
     path('feed/', FeedView.as_view(), name='feed'),
@@ -30,6 +31,8 @@ urlpatterns = [
     path('usuario/<str:username>/', UsuarioView.as_view(), name='usuarios'),
     path('usuario/<str:username>/seguidores/', ListaSeguidores.as_view()),
     path('usuario/<str:username>/seguindo/', ListaSeguindo.as_view()),
+
+    path('buscar/', BuscarUsuarioView.as_view(), name='buscar'),
 
     path('usuariocliente/posts/', ListaPostsUsuarioCliente.as_view()),
     path('<str:usuario>/posts/', ListaPostsUsuario.as_view()),

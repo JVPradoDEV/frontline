@@ -1,11 +1,11 @@
 from login.models import Usuario
 from login.serializer import UsuarioSerializer, CadastroSerializer
 from posts.models import Post, Comentario
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework import filters
 
 
 class CadastroView(APIView):
@@ -70,35 +70,38 @@ class SeguirView(APIView):
         return Response(status=200)
 
 
-# class LikeView(APIView):
-#     """
-#     View para dar like em post ou comentário
-#     Métodos - POST
-#     Argumentos - username do usuario e id do post ou comentário
-#     """
+class LikeView(APIView):
+    """
+    View para dar like em post ou comentário
+    Métodos - POST
+    Argumentos - username do usuario e id do post ou comentário
+    """
 
-#     permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
-#     def post(self, request):
-#         tipo = request.data['tipo']
-#         id = request.data['id']
+    def post(self, request):
+        tipo = request.data['tipo']
+        id = request.data['id']
 
-#         if tipo == "post":
-#             post_alvo = Post.objects.get(id=id)
+        if tipo == "post":
+            post_alvo = Post.objects.get(id=id)
+            post_alvo.likes.add(request.user)
 
-#         if tipo == "comentario":
-#             comentario_alvo = Post.objects.get(username=request.data["alvo"])
+            return Response(status=200)
+
+        if tipo == "comentario":
+            comentario_alvo = Comentario.objects.get(id=id)
+            comentario_alvo.likes.add(request.user)
 
 
-#             return Response(status=200)
+            return Response(status=200)
 
-#     def delete(self, request):
-#         usuario_alvo = Usuario.objects.get(username=request.data["alvo"])
-#         usuario_alvo.seguidores.remove(request.user)
-#         print(usuario_alvo.seguidores.all())
+    # def delete(self, request):
+    #     usuario_alvo = Usuario.objects.get(username=request.data["alvo"])
+    #     usuario_alvo.seguidores.remove(request.user)
+    #     print(usuario_alvo.seguidores.all())
     
-#         return Response(status=200)
-
+    #     return Response(status=200)
 
 
 class ListaSeguidores(ListAPIView):
@@ -148,3 +151,16 @@ class UsuarioClienteView(RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class BuscarUsuarioView(ListAPIView):
+    """
+    View para buscar um usuário pelo username ou nickname
+    Métodos - GET
+    """
+
+    permission_classes = [IsAuthenticated]
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username', 'nickname']
