@@ -100,4 +100,4 @@ class ListaPostsUsuario(ListAPIView):
     serializer_class = PostSerializer
 
     def get_queryset(self):
-        return Post.objects.filter(autor=self.kwargs['usuario'])
+        return Post.objects.filter(autor__username=self.kwargs['usuario'])
