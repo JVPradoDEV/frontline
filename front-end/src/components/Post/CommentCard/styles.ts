@@ -5,7 +5,7 @@ export const CommentCardContainer = styled.article`
   display: flex;
   gap: 12px;
   padding: 16px;
-  border-bottom: 1px solid #2f2f2f;
+  border-bottom: 1px solid ${colors.anotherHim};
 `;
 
 export const CommentAvatar = styled.div<{ $color: string }>`

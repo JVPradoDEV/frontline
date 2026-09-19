@@ -12,54 +12,8 @@ import {
   ActionBtn,
   ActionCount,
 } from "./styles";
-
-// ── Ícones ────────────────────────────────────────────────────────────────────
-const CommentIcon = () => (
-  <svg
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-  </svg>
-);
-
-const LikeIcon = () => (
-  <svg
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-  </svg>
-);
-
-const ProfileIcon = () => (
-  <svg
-    width="15"
-    height="15"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-    <circle cx="12" cy="7" r="4" />
-  </svg>
-);
-// ─────────────────────────────────────────────────────────────────────────────
+import { CommentIcon, LikeIcon, ProfileIcon } from "../../../styles/svgs";
+import { colors } from "../../../styles/colors";
 
 export function PostCard({
   id,
@@ -68,9 +22,10 @@ export function PostCard({
   content,
   commentsCount,
   likesCount,
-  avatarColor = "#e05252",
+  avatarColor = `${colors.lightRed}`,
 }: PostData) {
   const navigate = useNavigate();
+  const handleWithoutAt = userHandle.replace("@", "");
 
   return (
     <PostCardContainer onClick={() => navigate(`/feed/${id}`)}>
@@ -78,7 +33,15 @@ export function PostCard({
 
       <PostBody>
         <PostHeader>
-          <PostUserName>{userName}</PostUserName>
+          <PostUserName
+            onClick={(e) => {
+              e.stopPropagation(); // evita navegar para o post
+              navigate(`/perfil/${handleWithoutAt}`);
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            {userName}
+          </PostUserName>
           <PostUserHandle>{userHandle}</PostUserHandle>
           <ProfileIcon />
         </PostHeader>

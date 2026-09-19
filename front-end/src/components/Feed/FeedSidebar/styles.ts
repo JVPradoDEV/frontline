@@ -18,7 +18,7 @@ export const FeedSideBarDiv = styled(SideContainer)`
   top: 0;
 
   background-color: ${colors.black};
-  border-right: 1px solid #2f2f2f;
+  border-right: 1px solid ${colors.anotherHim};
   color: ${colors.white};
 `;
 
@@ -88,11 +88,14 @@ export const BottomSection = styled.div`
   }
 `;
 
-export const UserAvatar = styled.div`
+export const UserAvatar = styled.div<{ $foto?: string | null }>`
   width: 40px;
   height: 40px;
   border-radius: 50%;
   background-color: #555;
+  background-image: ${({ $foto }) => ($foto ? `url(${$foto})` : "none")};
+  background-size: cover;
+  background-position: center;
   flex-shrink: 0;
 `;
 
