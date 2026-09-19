@@ -12,7 +12,7 @@ class PostSerializer(ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['conteudo', 'n_likes', 'n_comentarios',  'autor', 'data_criacao']
+        fields = ['id','conteudo', 'n_likes', 'n_comentarios',  'autor', 'data_criacao']
 
     def get_n_likes(self, obj):
         return obj.likes.count()
@@ -27,7 +27,7 @@ class ComentarioSerializer(ModelSerializer):
 
     class Meta:
         model = Comentario
-        fields = ['conteudo', 'n_likes', 'post', 'autor', 'data_criacao']
+        fields = ['id','conteudo', 'n_likes', 'post', 'autor', 'data_criacao']
 
     def get_n_likes(self, obj):
         return obj.likes.count()

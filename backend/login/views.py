@@ -82,13 +82,13 @@ class SeguirView(APIView):
 #     def post(self, request):
 #         tipo = request.data['tipo']
 #         id = request.data['id']
-#         if tipo 
 
+#         if tipo == "post":
+#             post_alvo = Post.objects.get(id=id)
 
-#         post_alvo = Post.objects.get(username=request.data["alvo"])
+#         if tipo == "comentario":
+#             comentario_alvo = Post.objects.get(username=request.data["alvo"])
 
-#         if usuario_alvo != request.user:
-#             usuario_alvo.seguidores.add(request.user)
 
 #             return Response(status=200)
 
