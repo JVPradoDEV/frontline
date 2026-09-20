@@ -40,7 +40,7 @@ class UsuarioView(APIView):
 
     def get(self, request, username):
         usuario = Usuario.objects.get(username=self.kwargs['username'])
-        serializer = UsuarioSerializer(usuario)
+        serializer = UsuarioSerializer(usuario, context={'request': request})
 
         return Response(serializer.data, status=200)
 
