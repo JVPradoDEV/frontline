@@ -24,10 +24,18 @@ export const CardAvatar = styled.div<{ $foto?: string }>`
   flex-shrink: 0;
 `;
 
-export const CardHandle = styled.span`
-  font-size: 15px;
+export const CardTitle = styled.span`
+  font-size: 18px;
   font-weight: 600;
   color: ${colors.white};
+`;
+
+export const CardHandle = styled.span`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${colors.darkGray};
+  margin-top: 0px;
+  padding-top: 0px;
 `;
 
 export const CardStats = styled.div`

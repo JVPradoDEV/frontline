@@ -21,6 +21,7 @@ export const CommentBody = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 `;
 
 export const CommentHeader = styled.div`
@@ -45,15 +46,20 @@ export const CommentText = styled.p`
   font-size: 15px;
   line-height: 1.5;
   color: ${colors.white};
+
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
 `;
 
-export const LikeBtn = styled.button`
+export const LikeBtn = styled.button<{ $liked?: boolean }>`
   display: flex;
   align-items: center;
   gap: 6px;
   background: none;
   border: none;
-  color: #888;
+  color: ${({ $liked }) =>
+    $liked ? `${colors.lightRed}` : `${colors.mockColor}`};
   cursor: pointer;
   padding: 0;
   margin-top: 8px;
@@ -61,7 +67,8 @@ export const LikeBtn = styled.button`
   transition: color 0.15s;
 
   &:hover {
-    color: ${colors.white};
+    color: ${({ $liked }) =>
+      $liked ? `${colors.lightRed}` : `${colors.white}`};
   }
 `;
 

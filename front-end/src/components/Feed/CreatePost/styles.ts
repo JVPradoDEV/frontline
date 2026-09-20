@@ -21,6 +21,7 @@ export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
 `;
 
 export const PostTextarea = styled.textarea`
@@ -32,6 +33,10 @@ export const PostTextarea = styled.textarea`
   color: ${colors.white};
   font-size: 16px;
   line-height: 1.5;
+
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  overflow: hidden;
 
   &::placeholder {
     color: #555;

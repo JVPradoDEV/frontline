@@ -1,5 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { usePosts } from "../../contexts/PostsContext";
 import { FeedSidebar } from "../../components/Feed/FeedSidebar";
 import { PostFocus } from "../../components/Post/PostFocus";
 import { CreateComment } from "../../components/Post/CreateComment";
@@ -14,13 +13,25 @@ import {
   GlobalBackground,
 } from "./styles";
 import { BackIcon } from "../../styles/svgs";
+import {
+  useGetCommentsByPostQuery,
+  useGetPostByIdQuery,
+} from "../../store/api/postsApi";
+import { colors } from "../../styles/colors";
 
 export function PostDetailPage() {
   const { postId } = useParams<{ postId: string }>();
   const navigate = useNavigate();
-  const { posts } = usePosts();
+  const id = Number(postId);
 
-  const post = posts.find((p) => p.id === Number(postId));
+  const { data: post, isLoading: loadingPost } = useGetPostByIdQuery(id, {
+    skip: !id,
+  });
+
+  const { data: postComments = [], isLoading: loadingComments } =
+    useGetCommentsByPostQuery(id, { skip: !id });
+
+  const isLoading = loadingPost || loadingComments;
 
   return (
     <>
@@ -29,24 +40,44 @@ export function PostDetailPage() {
         <FeedSidebar />
         <PostDetailMain>
           <PostDetailHeader>
-            <BackButton onClick={() => navigate("/feed")} aria-label="Voltar">
+            <BackButton onClick={() => navigate(-1)} aria-label="Voltar">
               <BackIcon />
             </BackButton>
             <PageTitle>Post</PageTitle>
           </PostDetailHeader>
 
-          {post ? (
+          {isLoading && (
+            <p style={{ color: `${colors.mockColor}`, padding: "24px" }}>
+              Carregando...
+            </p>
+          )}
+
+          {!isLoading && post && (
             <>
               <PostFocus post={post} />
               <CreateComment postId={post.id} />
               <CommentsSection>
-                {post.comments.map((comment) => (
-                  <CommentCard key={comment.id} comment={comment} />
-                ))}
+                {postComments.length === 0 ? (
+                  <p
+                    style={{
+                      color: `${colors.gray}`,
+                      padding: "24px",
+                      textAlign: "center",
+                    }}
+                  >
+                    Nenhum comentário ainda.
+                  </p>
+                ) : (
+                  postComments.map((comment) => (
+                    <CommentCard key={comment.id} comment={comment} />
+                  ))
+                )}
               </CommentsSection>
             </>
-          ) : (
-            <p style={{ color: "#888", padding: "24px" }}>
+          )}
+
+          {!isLoading && !post && (
+            <p style={{ color: `${colors.gray}`, padding: "24px" }}>
               Post não encontrado.
             </p>
           )}

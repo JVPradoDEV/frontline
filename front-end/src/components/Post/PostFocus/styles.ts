@@ -48,4 +48,8 @@ export const FocusContent = styled.p`
   font-weight: 700;
   color: ${colors.white};
   line-height: 1.4;
+
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  overflow: hidden;
 `;

@@ -19,16 +19,16 @@ export function PostFocus({ post }: PostFocusProps) {
   return (
     <PostFocusContainer>
       <FocusHeader>
-        <FocusAvatar $color={post.avatarColor ?? `${colors.mockColor}`} />
+        <FocusAvatar $color={colors.mockColor ?? `${colors.mockColor}`} />
         <FocusUserInfo>
-          <FocusUserName>{post.userName}</FocusUserName>
+          <FocusUserName>{post.autor.username}</FocusUserName>
           <FocusUserHandle>
-            {post.userHandle} <ProfileIcon />
+            {post.autor.nickname} <ProfileIcon />
           </FocusUserHandle>
         </FocusUserInfo>
       </FocusHeader>
 
-      <FocusContent>{post.content}</FocusContent>
+      <FocusContent>{post.conteudo}</FocusContent>
     </PostFocusContainer>
   );
 }

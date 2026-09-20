@@ -27,6 +27,7 @@ export const PostBody = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 `;
 
 export const PostHeader = styled.div`
@@ -52,6 +53,10 @@ export const PostText = styled.p`
   font-size: 15px;
   line-height: 1.5;
   color: ${colors.white};
+
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
 `;
 
 export const PostActions = styled.div`
@@ -60,19 +65,20 @@ export const PostActions = styled.div`
   margin-top: 8px;
 `;
 
-export const ActionBtn = styled.button`
+export const ActionBtn = styled.button<{ $liked?: boolean }>`
   display: flex;
   align-items: center;
   gap: 6px;
   background: none;
   border: none;
-  color: #888;
+  color: ${({ $liked }) =>
+    $liked ? `${colors.lightRed}` : `${colors.mockColor}`};
   cursor: pointer;
   padding: 0;
   transition: color 0.15s;
 
   &:hover {
-    color: ${colors.white};
+    color: ${({ $liked }) => ($liked ? `${colors.lightRed}` : "white")};
   }
 `;
 

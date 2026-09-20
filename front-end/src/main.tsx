@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { setupAxiosInterceptors } from "./store/api/axiosInstance";
-import { PostsProvider } from "./contexts/PostsContext";
 import App from "./App.tsx";
 
 setupAxiosInterceptors(store);
@@ -13,9 +12,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <PostsProvider>
-          <App />
-        </PostsProvider>
+        <App />
       </BrowserRouter>
     </Provider>
   </StrictMode>,
