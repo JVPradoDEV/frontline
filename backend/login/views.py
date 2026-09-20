@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import filters
 
 
+
 class CadastroView(APIView):
     """
     View para cadastrar usuários.
