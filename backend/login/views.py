@@ -95,13 +95,24 @@ class LikeView(APIView):
 
 
             return Response(status=200)
+            
 
-    # def delete(self, request):
-    #     usuario_alvo = Usuario.objects.get(username=request.data["alvo"])
-    #     usuario_alvo.seguidores.remove(request.user)
-    #     print(usuario_alvo.seguidores.all())
-    
-    #     return Response(status=200)
+    def delete(self, request):
+            tipo = request.data['tipo']
+            id = request.data['id']
+
+            if tipo == "post":
+                post_alvo = Post.objects.get(id=id)
+                post_alvo.likes.remove(request.user)
+
+                return Response(status=200)
+
+            if tipo == "comentario":
+                comentario_alvo = Comentario.objects.get(id=id)
+                comentario_alvo.likes.remove(request.user)
+
+
+                return Response(status=200)
 
 
 class ListaSeguidores(ListAPIView):
