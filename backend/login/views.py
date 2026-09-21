@@ -1,10 +1,11 @@
 from login.models import Usuario
-from login.serializer import UsuarioSerializer, CadastroSerializer
+from login.serializer import UsuarioSerializer, CadastroSerializer, EditarUsuarioSerializer, AlterarSenhaSerializer
 from posts.models import Post, Comentario
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from posts.permissions import IsOwnerOrAdmin
 from rest_framework import filters
 
 
@@ -186,3 +187,35 @@ class ListaUsuarios(ListAPIView):
 
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
+
+
+class EditarUsuarioView(UpdateAPIView):
+    """
+    View para editar um usuário
+    Métodos - PUT e PATCH
+    """
+
+    serializer_class = EditarUsuarioSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
+
+    def get_object(self):
+        return self.request.user
+
+
+class AlterarSenhaView(APIView):
+    """
+    View para alterar a senha do usuário logado
+    Métodos - PUT e PATCH
+    """
+
+    permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
+
+    def patch(self, request):
+        serializer = AlterarSenhaSerializer(data=request.data, context={'request': request})
+
+        serializer.is_valid(raise_exception=True)
+
+        request.user.set_password(serializer.validated_data['senha_nova'])
+        request.user.save()
+
+        return Response({'detail': 'Senha alterada com sucesso.'})
