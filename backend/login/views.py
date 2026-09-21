@@ -176,3 +176,13 @@ class BuscarUsuarioView(ListAPIView):
     serializer_class = UsuarioSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['username', 'nickname']
+
+
+class ListaUsuarios(ListAPIView):
+    """
+    View para listar todos os usuários
+    Métodos - GET
+    """
+
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
