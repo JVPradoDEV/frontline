@@ -58,7 +58,6 @@ export function ProfilePage() {
       <GlobalBackground />
       <ProfileLayout>
         <FeedSidebar />
-
         <ProfileMain>
           <ProfilePageHeader>
             <BackButton onClick={() => navigate(-1)} aria-label="Voltar">
@@ -80,6 +79,7 @@ export function ProfilePage() {
           {!isLoading && userInfo && (
             <>
               <ProfileHeader
+                key={username}
                 user={userInfo}
                 isOwnProfile={isOwnProfile}
                 activeTab={activeTab}

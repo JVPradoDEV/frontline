@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { colors } from "../../../styles/colors";
 import { assets } from "../../../styles/assets";
+import { Avatar } from "../../shared/Avatar";
 
 export const ProfileHeaderContainer = styled.div`
   border-bottom: 1px solid ${colors.darkGray};
@@ -22,13 +23,7 @@ export const AvatarWrapper = styled.div`
   transform: translateX(-50%);
 `;
 
-export const ProfileAvatar = styled.div<{ $color: string }>`
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  background-color: ${({ $color }) => $color};
-  border: 3px solid ${colors.black};
-`;
+export const ProfileAvatar = styled(Avatar).attrs({ $size: 88 })``;
 
 export const ProfileInfoSection = styled.div`
   padding: 56px 16px 20px; /* padding-top = metade do avatar + gap */

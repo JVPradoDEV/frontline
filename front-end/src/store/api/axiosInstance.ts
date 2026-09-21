@@ -30,6 +30,11 @@ export function setupAxiosInterceptors(store: AppStore) {
     (config: InternalAxiosRequestConfig) => {
       const token = store.getState().auth.accessToken;
       if (token) config.headers.Authorization = `Bearer ${token}`;
+
+      if (config.data instanceof FormData) {
+        delete config.headers["Content-Type"];
+      }
+
       return config;
     },
   );

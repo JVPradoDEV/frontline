@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../../styles/colors";
+import { Avatar } from "../../shared/Avatar";
 
 export const CommentCardContainer = styled.article`
   display: flex;
@@ -8,13 +9,7 @@ export const CommentCardContainer = styled.article`
   border-bottom: 1px solid ${colors.anotherHim};
 `;
 
-export const CommentAvatar = styled.div<{ $color: string }>`
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background-color: ${({ $color }) => $color};
-  flex-shrink: 0;
-`;
+export const CommentAvatar = styled(Avatar).attrs({ $size: 42 })``;
 
 export const CommentBody = styled.div`
   flex: 1;

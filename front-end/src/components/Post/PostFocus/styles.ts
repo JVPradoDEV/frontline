@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../../styles/colors";
+import { Avatar } from "../../shared/Avatar";
 
 export const PostFocusContainer = styled.div`
   padding: 20px 16px;
@@ -13,13 +14,7 @@ export const FocusHeader = styled.div`
   margin-bottom: 16px;
 `;
 
-export const FocusAvatar = styled.div<{ $color: string }>`
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background-color: ${({ $color }) => $color};
-  flex-shrink: 0;
-`;
+export const FocusAvatar = styled(Avatar).attrs({ $size: 50 })``;
 
 export const FocusUserInfo = styled.div`
   display: flex;

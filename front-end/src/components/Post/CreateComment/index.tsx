@@ -1,5 +1,7 @@
+import { useSelector } from "react-redux";
 import { useState } from "react";
-// import { useSelector } from "react-redux";
+import { useCreateCommentMutation } from "../../../store/api/postsApi";
+import { selectUserProfile } from "../../../store/slices/authSlice";
 import {
   CreateCommentContainer,
   CommentAvatar,
@@ -9,8 +11,6 @@ import {
   CommentButton,
   ErrorMessage,
 } from "./styles";
-// import { selectUserProfile } from "../../../store/slices/authSlice";
-import { useCreateCommentMutation } from "../../../store/api/postsApi";
 
 interface CreateCommentProps {
   postId: number;
@@ -20,8 +20,7 @@ export function CreateComment({ postId }: CreateCommentProps) {
   const [content, setContent] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [createComment, { isLoading }] = useCreateCommentMutation();
-
-  // const { foto } = useSelector(selectUserProfile);
+  const { foto } = useSelector(selectUserProfile);
 
   async function handleComment() {
     if (!content.trim()) return;
@@ -45,7 +44,7 @@ export function CreateComment({ postId }: CreateCommentProps) {
 
   return (
     <CreateCommentContainer>
-      <CommentAvatar />
+      <CommentAvatar $foto={foto} />
       <InputWrapper>
         <CommentTextarea
           placeholder="Digite sobre oque quiser..."

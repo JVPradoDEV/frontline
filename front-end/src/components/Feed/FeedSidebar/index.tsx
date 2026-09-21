@@ -27,7 +27,7 @@ export function FeedSidebar() {
   const { pathname } = useLocation();
   useCurrentUserProfile();
 
-  const { username, nickname, foto } = useSelector(selectUserProfile);
+  const { username, foto } = useSelector(selectUserProfile);
 
   // "Meu Perfil" aponta para o perfil do usuário logado
   const profilePath = `/perfil/${username || ""}`;
@@ -35,8 +35,6 @@ export function FeedSidebar() {
   const navItemsWithProfile = navItems.map((item) =>
     item.label === "Meu Perfil" ? { ...item, to: profilePath } : item,
   );
-
-  const displayName = nickname || username || "Carregando...";
   return (
     <FeedSideBarDiv>
       <div>
@@ -64,7 +62,7 @@ export function FeedSidebar() {
 
       <BottomSection>
         <UserAvatar $foto={foto} />
-        <UserName>@{displayName}</UserName>
+        <UserName>@{username || "Carregando..."}</UserName>
       </BottomSection>
     </FeedSideBarDiv>
   );

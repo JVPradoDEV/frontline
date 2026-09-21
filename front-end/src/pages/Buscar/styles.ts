@@ -32,6 +32,13 @@ export const PageTitle = styled.h1`
   line-height: 1.4;
 `;
 
+export const SectionTitle = styled.h2`
+  margin: 0 0 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: ${colors.white};
+`;
+
 export const SearchBar = styled.div`
   display: flex;
   align-items: center;

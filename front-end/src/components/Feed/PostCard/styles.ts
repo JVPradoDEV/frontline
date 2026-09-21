@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../../styles/colors";
+import { Avatar } from "../../shared/Avatar";
 
 export const PostCardContainer = styled.article`
   display: flex;
@@ -14,13 +15,7 @@ export const PostCardContainer = styled.article`
   }
 `;
 
-export const PostAvatar = styled.div<{ $color: string }>`
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background-color: ${({ $color }) => $color};
-  flex-shrink: 0;
-`;
+export const PostAvatar = styled(Avatar).attrs({ $size: 42 })``;
 
 export const PostBody = styled.div`
   flex: 1;

@@ -8,7 +8,9 @@ export function PostList() {
 
   if (isLoading) {
     return (
-      <p style={{ textAlign: "center", padding: "24px" }}>Carregando feed...</p>
+      <p style={{ textAlign: "center", padding: "24px", color: "white" }}>
+        Carregando feed...
+      </p>
     );
   }
 

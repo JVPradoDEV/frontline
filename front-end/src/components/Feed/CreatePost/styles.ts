@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../../styles/colors";
+import { Avatar } from "../../shared/Avatar";
 
 export const CreatePostContainer = styled.div`
   display: flex;
@@ -8,13 +9,7 @@ export const CreatePostContainer = styled.div`
   border-bottom: 1px solid rgb(47, 47, 47);
 `;
 
-export const SelfAvatar = styled.div`
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background-color: #555;
-  flex-shrink: 0;
-`;
+export const SelfAvatar = styled(Avatar).attrs({ $size: 42 })``;
 
 export const InputWrapper = styled.div`
   flex: 1;
