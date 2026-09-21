@@ -1,10 +1,10 @@
 from login.models import Usuario
-from login.serializer import UsuarioSerializer, CadastroSerializer
+from login.serializer import UsuarioSerializer, CadastroSerializer, EditarUsuarioSerializer
 from posts.models import Post, Comentario
 from posts.serializer import PostSerializer, ComentarioSerializer
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from posts.permissions import IsOwnerOrAdmin
@@ -101,3 +101,4 @@ class ListaPostsUsuario(ListAPIView):
 
     def get_queryset(self):
         return Post.objects.filter(autor__username=self.kwargs['usuario'])
+    
