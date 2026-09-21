@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import type { PostData } from "../../../types/post";
 import {
   PostCardContainer,
   PostAvatar,
@@ -14,39 +13,91 @@ import {
 } from "./styles";
 import { CommentIcon, LikeIcon, ProfileIcon } from "../../../styles/svgs";
 import { colors } from "../../../styles/colors";
+import {
+  useLikeMutation,
+  useUnlikeMutation,
+} from "../../../store/api/postsApi";
+import { useState } from "react";
+
+interface PostProps {
+  id: number;
+  username: string;
+  nickname: string;
+  conteudo: string;
+  n_comentarios: number;
+  n_likes: number;
+  foto?: string;
+  deu_like: boolean;
+}
 
 export function PostCard({
   id,
-  userName,
-  userHandle,
-  content,
-  commentsCount,
-  likesCount,
-  avatarColor = `${colors.lightRed}`,
-}: PostData) {
+  username,
+  nickname,
+  conteudo,
+  n_comentarios,
+  n_likes,
+  deu_like,
+}: PostProps) {
   const navigate = useNavigate();
-  const handleWithoutAt = userHandle.replace("@", "");
+
+  const [liked, setLiked] = useState(deu_like || false);
+  const [likesCount, setLikesCount] = useState(n_likes);
+
+  const [prevDeuLike, setPrevDeuLike] = useState(deu_like);
+  const [prevNLikes, setPrevNLikes] = useState(n_likes);
+
+  if (deu_like !== prevDeuLike || n_likes !== prevNLikes) {
+    setPrevDeuLike(deu_like);
+    setPrevNLikes(n_likes);
+
+    setLiked(deu_like || false);
+    setLikesCount(n_likes);
+  }
+
+  const [like] = useLikeMutation();
+  const [unlike] = useUnlikeMutation();
+
+  async function handleLike(e: React.MouseEvent) {
+    e.stopPropagation();
+
+    try {
+      if (liked) {
+        setLiked(false);
+        setLikesCount((c) => c - 1);
+        await unlike({ tipo: "post", id }).unwrap();
+      } else {
+        setLiked(true);
+        setLikesCount((c) => c + 1);
+        await like({ tipo: "post", id }).unwrap();
+      }
+    } catch {
+      setLiked(deu_like || false);
+      setLikesCount(n_likes);
+      console.error("Erro ao curtir post.");
+    }
+  }
 
   return (
     <PostCardContainer onClick={() => navigate(`/feed/${id}`)}>
-      <PostAvatar $color={avatarColor} />
+      <PostAvatar $color={colors.mockColor} />
 
       <PostBody>
         <PostHeader>
           <PostUserName
             onClick={(e) => {
-              e.stopPropagation(); // evita navegar para o post
-              navigate(`/perfil/${handleWithoutAt}`);
+              e.stopPropagation();
+              navigate(`/perfil/${username}`);
             }}
             style={{ cursor: "pointer" }}
           >
-            {userName}
+            {nickname || username}
           </PostUserName>
-          <PostUserHandle>{userHandle}</PostUserHandle>
+          <PostUserHandle>@{username}</PostUserHandle>
           <ProfileIcon />
         </PostHeader>
 
-        <PostText>{content}</PostText>
+        <PostText>{conteudo}</PostText>
 
         <PostActions>
           <ActionBtn
@@ -54,10 +105,10 @@ export function PostCard({
             onClick={(e) => e.stopPropagation()}
           >
             <CommentIcon />
-            <ActionCount>{commentsCount}</ActionCount>
+            <ActionCount>{n_comentarios}</ActionCount>
           </ActionBtn>
 
-          <ActionBtn aria-label="Curtidas" onClick={(e) => e.stopPropagation()}>
+          <ActionBtn aria-label="Curtidas" $liked={liked} onClick={handleLike}>
             <LikeIcon />
             <ActionCount>{likesCount}</ActionCount>
           </ActionBtn>

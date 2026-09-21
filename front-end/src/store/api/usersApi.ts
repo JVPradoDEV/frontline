@@ -4,9 +4,11 @@ import { setProfile, type UserProfilePayload } from "../slices/authSlice";
 
 export interface UserSearchResult {
   username: string;
-  seguidores: number;
-  seguindo: number;
+  nickname: string;
+  n_seguidores: number;
+  n_seguindo: number;
   foto: string;
+  seguindo: boolean;
 }
 
 export const usersApi = createApi({
@@ -14,8 +16,7 @@ export const usersApi = createApi({
   baseQuery: axiosBaseQuery(),
 
   endpoints: (builder) => ({
-    // GET /usuario/{username} — Authorization injetado pelo interceptor
-    getUserProfile: builder.query<UserProfilePayload, void>({
+    getUserProfile: builder.query<UserProfilePayload, string>({
       query: () => ({
         url: `/usuariocliente/`,
         method: "GET",
@@ -29,20 +30,35 @@ export const usersApi = createApi({
         }
       },
     }),
-
     searchUsers: builder.query<UserSearchResult[], string>({
       query: (keyword) => ({
-        url: "/users/search",
+        url: `/buscar/?search=${keyword}`,
         method: "GET",
-        params: { q: keyword },
       }),
     }),
-
     getPublicUserProfile: builder.query<UserProfilePayload, string>({
       query: (username) => ({
         url: `/usuario/${username}`,
         method: "GET",
       }),
+    }),
+    getUserFollowers: builder.query<UserSearchResult[], string>({
+      query: (username) => ({
+        url: `/usuario/${username}/seguidores/`,
+        method: "GET",
+      }),
+    }),
+    getUserFolloweds: builder.query<UserSearchResult[], string>({
+      query: (username) => ({
+        url: `/usuario/${username}/seguindo/`,
+        method: "GET",
+      }),
+    }),
+    follow: builder.mutation<void, { alvo: string }>({
+      query: (body) => ({ url: "/seguir/", method: "POST", body }),
+    }),
+    unfollow: builder.mutation<void, { alvo: string }>({
+      query: (body) => ({ url: "/seguir/", method: "DELETE", body }),
     }),
   }),
 });
@@ -51,4 +67,8 @@ export const {
   useGetUserProfileQuery,
   useLazySearchUsersQuery,
   useGetPublicUserProfileQuery,
+  useFollowMutation,
+  useUnfollowMutation,
+  useGetUserFollowedsQuery,
+  useGetUserFollowersQuery,
 } = usersApi;

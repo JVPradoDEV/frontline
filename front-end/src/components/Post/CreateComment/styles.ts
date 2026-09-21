@@ -16,6 +16,13 @@ export const CommentAvatar = styled.div`
   flex-shrink: 0;
 `;
 
+export const ErrorMessage = styled.span`
+  color: ${colors.lightRed};
+  font-size: 14px;
+  margin-top: -4px;
+  margin-bottom: 4px;
+`;
+
 export const InputWrapper = styled.div`
   flex: 1;
   display: flex;

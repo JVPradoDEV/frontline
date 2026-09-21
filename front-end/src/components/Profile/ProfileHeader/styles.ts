@@ -57,11 +57,21 @@ export const StatsRow = styled.div`
   margin-top: 12px;
 `;
 
-export const StatItem = styled.div`
+export const StatItem = styled.div<{ $active?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background-color 0.15s;
+  background-color: ${({ $active }) =>
+    $active ? "rgba(255,255,255,0.08)" : "transparent"};
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
 `;
 
 export const StatLabel = styled.span`
@@ -75,21 +85,24 @@ export const StatValue = styled.span`
   color: ${colors.white};
 `;
 
-export const ActionButton = styled.button`
+export const ActionButton = styled.button<{ $following?: boolean }>`
   padding: 8px 20px;
   border-radius: 9999px;
-  background-color: transparent;
-  color: ${colors.white};
+  background-color: ${({ $following }) =>
+    $following ? "transparent" : "transparent"};
+  color: ${({ $following }) => ($following ? `${colors.mockColor}` : "white")};
   font-weight: 700;
   font-size: 15px;
-  border: 2px solid ${colors.white};
+  border: 2px solid
+    ${({ $following }) => ($following ? `${colors.mockColor}` : "white")};
   cursor: pointer;
-  transition:
-    background-color 0.15s,
-    color 0.15s;
+  transition: all 0.15s;
 
   &:hover {
-    background-color: ${colors.white};
-    color: ${colors.black};
+    background-color: ${({ $following }) =>
+      $following ? "rgba(224,82,82,0.1)" : "white"};
+    color: ${({ $following }) => ($following ? `${colors.lightRed}` : "black")};
+    border-color: ${({ $following }) =>
+      $following ? `${colors.lightRed}` : "white"};
   }
 `;

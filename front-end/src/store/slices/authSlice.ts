@@ -44,6 +44,7 @@ export interface UserProfilePayload {
   foto: string | null;
   n_seguidores: number;
   n_seguindo: number;
+  seguindo?: boolean;
 }
 
 // ── Reidrata do localStorage (persiste entre refreshes de página) ──────────────

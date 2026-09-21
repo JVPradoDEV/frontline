@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import { usePosts } from "../../contexts/PostsContext";
 import { FeedSidebar } from "../../components/Feed/FeedSidebar";
 import { ProfileHeader } from "../../components/Profile/ProfileHeader";
 import { ProfilePostList } from "../../components/Profile/ProfilePostList";
@@ -13,28 +13,45 @@ import {
   GlobalBackground,
 } from "./styles";
 import { BackIcon } from "../../styles/svgs";
-import { selectCurrentUser } from "../../store/slices/authSlice";
-import { useGetPublicUserProfileQuery } from "../../store/api/usersApi";
+import { selectUserProfile } from "../../store/slices/authSlice";
+import {
+  useGetPublicUserProfileQuery,
+  useGetUserFollowedsQuery,
+  useGetUserFollowersQuery,
+} from "../../store/api/usersApi";
+import { useGetUserPostsQuery } from "../../store/api/postsApi";
+import { colors } from "../../styles/colors";
+import { FollowList } from "../../components/Profile/FollowList";
+
+type ActiveTab = "seguidores" | "seguindo" | null;
 
 export function ProfilePage() {
   const { username } = useParams<{ username: string }>();
   const navigate = useNavigate();
-
-  const currentUser = useSelector(selectCurrentUser);
+  const currentUser = useSelector(selectUserProfile);
   const isOwnProfile = currentUser.username === username;
 
-  const {
-    data: userProfile,
-    isLoading,
-    isError,
-  } = useGetPublicUserProfileQuery(username ?? "", {
-    skip: !username, // Não faz o GET se não tiver username na URL
-  });
+  const [activeTab, setActiveTab] = useState<ActiveTab>(null);
 
-  const { posts } = usePosts();
-  const userPosts = posts.filter((post) => post.userHandle === `@${username}`);
+  const { data: userInfo, isLoading: loadingProfile } =
+    useGetPublicUserProfileQuery(username!, { skip: !username });
 
-  const headerName = userProfile?.nickname || userProfile?.username || "Perfil";
+  const { data: posts = [], isLoading: loadingPosts } = useGetUserPostsQuery(
+    username!,
+    { skip: !username },
+  );
+
+  const { data: followers = [], isLoading: loadingFollowers } =
+    useGetUserFollowersQuery(username!, {
+      skip: !username || activeTab !== "seguidores",
+    });
+
+  const { data: followeds = [], isLoading: loadingFolloweds } =
+    useGetUserFollowedsQuery(username!, {
+      skip: !username || activeTab !== "seguindo",
+    });
+
+  const isLoading = loadingProfile || loadingPosts;
 
   return (
     <>
@@ -47,22 +64,56 @@ export function ProfilePage() {
             <BackButton onClick={() => navigate(-1)} aria-label="Voltar">
               <BackIcon />
             </BackButton>
-            <PageTitle>{isLoading ? "Carregando..." : headerName}</PageTitle>
+            <PageTitle>
+              {isLoading
+                ? "..."
+                : userInfo?.nickname || userInfo?.username || "Perfil"}
+            </PageTitle>
           </ProfilePageHeader>
 
-          {isLoading ? (
-            <p style={{ color: "#888", padding: "24px", textAlign: "center" }}>
-              Carregando perfil...
+          {isLoading && (
+            <p style={{ color: `${colors.gray}`, padding: "24px" }}>
+              Carregando...
             </p>
-          ) : isError || !userProfile ? (
-            <p style={{ color: "#888", padding: "24px", textAlign: "center" }}>
+          )}
+
+          {!isLoading && userInfo && (
+            <>
+              <ProfileHeader
+                user={userInfo}
+                isOwnProfile={isOwnProfile}
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+              />
+
+              {activeTab === "seguidores" && (
+                <FollowList
+                  title="Seguidores"
+                  users={followers}
+                  isLoading={loadingFollowers}
+                  currentUsername={currentUser.username}
+                  onClose={() => setActiveTab(null)}
+                />
+              )}
+
+              {activeTab === "seguindo" && (
+                <FollowList
+                  title="Seguindo"
+                  users={followeds}
+                  isLoading={loadingFolloweds}
+                  currentUsername={currentUser.username}
+                  onClose={() => setActiveTab(null)}
+                />
+              )}
+
+              <ProfilePostList posts={posts} isOwnProfile={isOwnProfile} />
+            </>
+          )}
+
+          {!isLoading && !userInfo && (
+            <p style={{ color: `${colors.gray}`, padding: "24px" }}>
               Usuário não encontrado.
             </p>
-          ) : (
-            <>
-              <ProfileHeader user={userProfile!} isOwnProfile={isOwnProfile} />
-              <ProfilePostList posts={userPosts} />
-            </>
           )}
         </ProfileMain>
       </ProfileLayout>

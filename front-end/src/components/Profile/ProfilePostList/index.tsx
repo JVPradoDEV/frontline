@@ -5,6 +5,7 @@ import { ProfilePostsContainer, ProfilePostsTitle } from "./styles";
 
 interface ProfilePostListProps {
   posts: PostData[];
+  isOwnProfile: boolean;
 }
 
 export function ProfilePostList({ posts }: ProfilePostListProps) {
@@ -23,7 +24,19 @@ export function ProfilePostList({ posts }: ProfilePostListProps) {
           Nenhum post ainda.
         </p>
       ) : (
-        posts.map((post) => <PostCard key={post.id} {...post} />)
+        posts.map((post) => (
+          <PostCard
+            key={post.id}
+            conteudo={post.conteudo}
+            foto={post.autor.foto}
+            username={post.autor.username}
+            nickname={post.autor.nickname}
+            id={post.id}
+            n_comentarios={post.n_comentarios}
+            n_likes={post.n_likes}
+            deu_like={post.deu_like}
+          />
+        ))
       )}
     </ProfilePostsContainer>
   );

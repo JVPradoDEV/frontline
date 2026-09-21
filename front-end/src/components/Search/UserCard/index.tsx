@@ -9,12 +9,14 @@ import {
   StatLabel,
   StatValue,
   ViewProfileButton,
+  CardTitle,
 } from "./styles";
 
 export function UserCard({
   username,
-  seguidores,
-  seguindo,
+  n_seguidores,
+  n_seguindo,
+  nickname,
   foto,
 }: UserSearchResult) {
   const navigate = useNavigate();
@@ -22,16 +24,17 @@ export function UserCard({
   return (
     <CardContainer>
       <CardAvatar $foto={foto} />
+      <CardTitle>{nickname}</CardTitle>
       <CardHandle>@{username}</CardHandle>
 
       <CardStats>
         <StatCol>
           <StatLabel>Seguidores</StatLabel>
-          <StatValue>{seguidores}</StatValue>
+          <StatValue>{n_seguidores}</StatValue>
         </StatCol>
         <StatCol>
           <StatLabel>Seguindo</StatLabel>
-          <StatValue>{seguindo}</StatValue>
+          <StatValue>{n_seguindo}</StatValue>
         </StatCol>
       </CardStats>
 
