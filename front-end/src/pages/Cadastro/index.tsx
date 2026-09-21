@@ -4,12 +4,8 @@ import { useDispatch } from "react-redux";
 import { AccessButton } from "../../components/AccessButton";
 import { assets } from "../../styles/assets";
 import { NicknameModal } from "./NicknameModal";
-import {
-  useRegisterMutation,
-  useUpdateNicknameMutation,
-} from "../../store/api/authApi";
+import { useLoginMutation, useRegisterMutation } from "../../store/api/authApi";
 import { setCredentials } from "../../store/slices/authSlice";
-import { useAuth } from "../../hooks/useAuth";
 import type { AppDispatch } from "../../store";
 import {
   ErrorMsg,
@@ -18,6 +14,7 @@ import {
   LoginDiv,
   SubmitButton,
 } from "../Login/styles";
+import { useEditProfileMutation } from "../../store/api/usersApi";
 
 interface FormState {
   username: string;
@@ -28,7 +25,6 @@ interface FormState {
 export function Cadastro() {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useAuth(); // userId já vem do Redux após o register
 
   const [form, setForm] = useState<FormState>({
     username: "",
@@ -39,7 +35,11 @@ export function Cadastro() {
   const [showModal, setShowModal] = useState(false);
 
   const [register, { isLoading: isRegistering }] = useRegisterMutation();
-  const [updateNickname] = useUpdateNicknameMutation();
+  const [login, { isLoading: isLoggingIn }] = useLoginMutation();
+  const [editProfile, { isLoading: isSavingNickname }] =
+    useEditProfileMutation();
+
+  const isLoading = isRegistering || isLoggingIn;
 
   function handleChange(field: keyof FormState) {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,27 +66,46 @@ export function Cadastro() {
     }
 
     try {
-      const data = await register({
+      await register({
         username: form.username,
         password: form.password,
       }).unwrap();
 
-      // Persiste access token na memória e refresh token no localStorage
-      dispatch(setCredentials(data));
+      const loginData = await login({
+        username: form.username,
+        password: form.password,
+      }).unwrap();
+
+      if (!loginData.access || !loginData.refresh) {
+        setError("Erro ao autenticar após cadastro. Tente fazer login.");
+        return;
+      }
+
+      // ← mapeia os campos da API para os campos internos do Redux
+      dispatch(
+        setCredentials({
+          accessToken: loginData.access,
+          refreshToken: loginData.refresh,
+          username: "",
+        }),
+      );
+
       setShowModal(true);
-    } catch {
-      setError("Erro ao cadastrar. Tente novamente.");
+    } catch (err) {
+      const errData = (err as { data?: Record<string, unknown> })?.data;
+      const apiMsg = errData ? Object.values(errData).flat().join(" ") : null;
+
+      setError(apiMsg || "Erro ao cadastrar. Tente novamente.");
     }
   }
 
   async function handleNicknameConfirm(nickname: string) {
-    if (user.userId) {
-      try {
-        // Token injetado automaticamente pelo interceptor do Axios
-        await updateNickname({ userId: user.userId, nickname }).unwrap();
-      } catch {
-        console.error("Erro ao salvar nome de exibição.");
-      }
+    try {
+      const formData = new FormData();
+      formData.append("nickname", nickname.trim());
+      await editProfile(formData).unwrap();
+    } catch {
+      console.error("Erro ao salvar nome de exibição.");
     }
     setShowModal(false);
     navigate("/feed");
@@ -104,7 +123,6 @@ export function Cadastro() {
                 type="text"
                 value={form.username}
                 onChange={handleChange("username")}
-                placeholder="@seuusuario"
               />
             </div>
             <div className="input">
@@ -127,8 +145,8 @@ export function Cadastro() {
             <ErrorMsg $visible={!!error}>{error}</ErrorMsg>
 
             <div className="btns">
-              <SubmitButton onClick={handleRegister} disabled={isRegistering}>
-                {isRegistering ? "Cadastrando..." : "Cadastrar"}
+              <SubmitButton onClick={handleRegister} disabled={isLoading}>
+                {isLoading ? "Cadastrando..." : "Cadastrar"}
               </SubmitButton>
               <AccessButton path="/">Voltar</AccessButton>
             </div>
@@ -143,6 +161,7 @@ export function Cadastro() {
             setShowModal(false);
             navigate("/feed");
           }}
+          isLoading={isSavingNickname}
         />
       )}
     </>

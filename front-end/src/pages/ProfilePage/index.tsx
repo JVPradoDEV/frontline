@@ -34,11 +34,17 @@ export function ProfilePage() {
   const [activeTab, setActiveTab] = useState<ActiveTab>(null);
 
   const { data: userInfo, isLoading: loadingProfile } =
-    useGetPublicUserProfileQuery(username!, { skip: !username });
+    useGetPublicUserProfileQuery(username!, {
+      skip: !username,
+      refetchOnMountOrArgChange: true,
+    });
 
   const { data: posts = [], isLoading: loadingPosts } = useGetUserPostsQuery(
     username!,
-    { skip: !username },
+    {
+      skip: !username,
+      refetchOnMountOrArgChange: true,
+    },
   );
 
   const { data: followers = [], isLoading: loadingFollowers } =

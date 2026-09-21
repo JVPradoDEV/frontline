@@ -12,6 +12,16 @@ import {
   ErrorMessage,
 } from "./styles";
 
+interface ApiError {
+  status?: number;
+  data?: {
+    conteudo?: string[];
+    detail?: string;
+    details?: string;
+    [key: string]: unknown;
+  };
+}
+
 interface CreateCommentProps {
   postId: number;
 }
@@ -28,10 +38,15 @@ export function CreateComment({ postId }: CreateCommentProps) {
     try {
       // Passa o conteúdo e o ID do post, conforme exigido pelo backend
       await createComment({ conteudo: content.trim(), post: postId }).unwrap();
-      setContent(""); // Limpa o campo após o sucesso
+      setContent("");
+      const el = document.getElementById(
+        "comment-textarea",
+      ) as HTMLTextAreaElement | null;
+      if (el) el.style.height = "auto";
     } catch (error) {
       console.error("Erro ao enviar o comentário", error);
-      const errData = (error as any)?.data;
+      const err = error as ApiError;
+      const errData = err?.data;
 
       const apiError =
         errData?.conteudo?.[0] ||
@@ -49,6 +64,7 @@ export function CreateComment({ postId }: CreateCommentProps) {
         <CommentTextarea
           placeholder="Digite sobre oque quiser..."
           rows={1}
+          value={content}
           onChange={(e) => {
             setContent(e.target.value);
             setErrorMsg("");

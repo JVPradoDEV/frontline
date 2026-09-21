@@ -22,9 +22,12 @@ export const usersApi = createApi({
   tagTypes: ["UserProfile"],
 
   endpoints: (builder) => ({
-    getUserProfile: builder.query<UserProfilePayload, string>({
-      query: () => ({ url: `/usuariocliente/`, method: "GET" }),
-      providesTags: ["UserProfile"], // ← estava dentro do query(), corrigido
+    getUserProfile: builder.query<UserProfilePayload, void>({
+      query: () => ({
+        url: `/usuariocliente/`,
+        method: "GET",
+      }),
+      providesTags: ["UserProfile"], //
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
@@ -42,10 +45,8 @@ export const usersApi = createApi({
       }),
     }),
     getPublicUserProfile: builder.query<UserProfilePayload, string>({
-      query: (username) => ({
-        url: `/usuario/${username}`,
-        method: "GET",
-      }),
+      query: (username) => ({ url: `/usuario/${username}`, method: "GET" }),
+      providesTags: ["UserProfile"],
     }),
     getUserFollowers: builder.query<UserSearchResult[], string>({
       query: (username) => ({
@@ -77,13 +78,14 @@ export const usersApi = createApi({
         method: "PATCH",
         body: formData,
       }),
-      invalidatesTags: ["UserProfile"], // refetch automático do perfil
+
+      invalidatesTags: ["UserProfile"],
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(setProfile(data)); // atualiza sidebar em tempo real
+          dispatch(setProfile(data));
         } catch {
-          // catch silencioso again
+          //
         }
       },
     }),

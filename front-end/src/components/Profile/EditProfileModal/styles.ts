@@ -90,7 +90,7 @@ export const FieldInput = styled.input`
   box-sizing: border-box;
 
   &::placeholder {
-    color: ${colors.darkGray};
+    color: ${colors.mockColor};
   }
 `;
 
