@@ -29,16 +29,21 @@ Certifique-se de ter o **Node.js** e o gerenciador de pacotes **NPM** instalados
 
 ### Instalação e Execução
 
-1. Abra o terminal e certifique-se de estar dentro do diretório raiz do front-end do Frontline.
-2. Caso precise inicializar as configurações do npm do zero, utilize:
+1. Clonar o projeto
+```bash
+git clone URL_DO_REPOSITORIO
+cd frontend
+```
+2. Abra o terminal e certifique-se de estar dentro do diretório raiz do front-end do Frontline.
+3. Caso precise inicializar as configurações do npm do zero, utilize:
    ```bash
    npm init
    ```
-2. Instale todas as dependências do projeto executando:
+4. Instale todas as dependências do projeto executando:
    ```bash
    npm install
    ```
-3. Para iniciar o servidor de desenvolvimento (localhost), rode o comando:
+5. Para iniciar o servidor de desenvolvimento (localhost), rode o comando:
    ```bash
    npm run dev
    ```
