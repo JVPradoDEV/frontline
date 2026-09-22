@@ -44,13 +44,18 @@ Certifique-se de ter o **Node.js** e o gerenciador de pacotes **NPM** instalados
    ```
    Após executar este comando, o terminal exibirá a URL local (geralmente **http://localhost:5173/**) onde você pode acessar a aplicação no seu navegador.
 
-##📦- Build para Produção
+## 📦- Build para Produção
 
 Quando terminar o desenvolvimento e quiser preparar o projeto para o deploy, gere a versão otimizada com o comando:
   ```bash
   npm run build
   ```
 O Vite irá empacotar os arquivos otimizados e minificados dentro de uma pasta chamada dist, prontos para serem hospedados.
+
+---
+
+### 🖌️ Aqui está alguns concepts das páginas feitas no FIGMA como base para depois ser aplicado no site de fato:
+https://www.figma.com/site/GjaMeO5HUTRWPKFHd57UQ5/frontline-projeto-?node-id=0-1&t=DDLwh8RfZfY2swtE-1
 
 
 ## ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
