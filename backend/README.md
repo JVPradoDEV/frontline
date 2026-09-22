@@ -59,7 +59,7 @@ No painel do Supabase:
 1. Acesse **Storage**.
 2. Clique em **Create Bucket**.
 3. Crie o bucket utilizado pela aplicação.
-4. Defina as configurações de visibilidade e permissões necessárias.
+4. Defina as configurações de visibilidade como públicas.
 
 O nome do bucket deve ser utilizado na variável:
 
