@@ -1,4 +1,3 @@
-import { colors } from "../../../styles/colors";
 import { ProfileIcon } from "../../../styles/svgs";
 import type { PostData } from "../../../types/post";
 import {
@@ -19,7 +18,7 @@ export function PostFocus({ post }: PostFocusProps) {
   return (
     <PostFocusContainer>
       <FocusHeader>
-        <FocusAvatar $color={colors.mockColor ?? `${colors.mockColor}`} />
+        <FocusAvatar $foto={post.autor.foto} />
         <FocusUserInfo>
           <FocusUserName>{post.autor.username}</FocusUserName>
           <FocusUserHandle>

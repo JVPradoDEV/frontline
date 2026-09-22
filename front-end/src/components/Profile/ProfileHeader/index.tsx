@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { UserProfilePayload } from "../../../store/slices/authSlice";
-import { colors } from "../../../styles/colors";
 import {
   useFollowMutation,
   useUnfollowMutation,
@@ -19,6 +18,7 @@ import {
   StatValue,
   ActionButton,
 } from "./styles";
+import { EditProfileModal } from "../EditProfileModal";
 
 type ActiveTab = "seguidores" | "seguindo" | null;
 
@@ -39,6 +39,7 @@ export function ProfileHeader({
 
   const [following, setFollowing] = useState(user.seguindo ?? false);
   const [followersCount, setFollowersCount] = useState(user.n_seguidores);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const [follow] = useFollowMutation();
   const [unfollow] = useUnfollowMutation();
@@ -66,43 +67,50 @@ export function ProfileHeader({
   }
 
   return (
-    <ProfileHeaderContainer>
-      <BannerSection>
-        <AvatarWrapper>
-          <ProfileAvatar $color={colors.mockColor} />
-        </AvatarWrapper>
-      </BannerSection>
+    <>
+      <ProfileHeaderContainer>
+        <BannerSection>
+          <AvatarWrapper>
+            <ProfileAvatar $foto={user.foto} />
+          </AvatarWrapper>
+        </BannerSection>
 
-      <ProfileInfoSection>
-        <ProfileUserName>{displayName}</ProfileUserName>
-        <ProfileUserHandle>@{user.username}</ProfileUserHandle>
+        <ProfileInfoSection>
+          <ProfileUserName>{displayName}</ProfileUserName>
+          <ProfileUserHandle>@{user.username}</ProfileUserHandle>
 
-        <StatsRow>
-          <StatItem
-            onClick={() => handleTabClick("seguidores")}
-            $active={activeTab === "seguidores"}
-          >
-            <StatLabel>Seguidores:</StatLabel>
-            <StatValue>{followersCount}</StatValue>
-          </StatItem>
+          <StatsRow>
+            <StatItem
+              onClick={() => handleTabClick("seguidores")}
+              $active={activeTab === "seguidores"}
+            >
+              <StatLabel>Seguidores:</StatLabel>
+              <StatValue>{followersCount}</StatValue>
+            </StatItem>
 
-          {isOwnProfile ? (
-            <ActionButton>Editar Perfil</ActionButton>
-          ) : (
-            <ActionButton onClick={handleFollow} $following={following}>
-              {following ? "Seguindo" : "Seguir"}
-            </ActionButton>
-          )}
+            {isOwnProfile ? (
+              <ActionButton onClick={() => setShowEditModal(true)}>
+                Editar Perfil
+              </ActionButton>
+            ) : (
+              <ActionButton $following={following} onClick={handleFollow}>
+                {following ? "Seguindo" : "Seguir"}
+              </ActionButton>
+            )}
 
-          <StatItem
-            onClick={() => handleTabClick("seguindo")}
-            $active={activeTab === "seguindo"}
-          >
-            <StatLabel>Seguindo:</StatLabel>
-            <StatValue>{user.n_seguindo}</StatValue>
-          </StatItem>
-        </StatsRow>
-      </ProfileInfoSection>
-    </ProfileHeaderContainer>
+            <StatItem
+              onClick={() => handleTabClick("seguindo")}
+              $active={activeTab === "seguindo"}
+            >
+              <StatLabel>Seguindo:</StatLabel>
+              <StatValue>{user.n_seguindo}</StatValue>
+            </StatItem>
+          </StatsRow>
+        </ProfileInfoSection>
+      </ProfileHeaderContainer>
+      {showEditModal && (
+        <EditProfileModal user={user} onClose={() => setShowEditModal(false)} />
+      )}
+    </>
   );
 }

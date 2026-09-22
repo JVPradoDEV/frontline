@@ -66,7 +66,6 @@ export function LoginPage() {
         setCredentials({
           accessToken: data.access,
           refreshToken: data.refresh,
-          userId: data.userId,
           username: data.username,
         }),
       );

@@ -1,5 +1,7 @@
+import { useSelector } from "react-redux";
 import { useState } from "react";
-// import { useSelector } from "react-redux";
+import { useCreateCommentMutation } from "../../../store/api/postsApi";
+import { selectUserProfile } from "../../../store/slices/authSlice";
 import {
   CreateCommentContainer,
   CommentAvatar,
@@ -9,8 +11,16 @@ import {
   CommentButton,
   ErrorMessage,
 } from "./styles";
-// import { selectUserProfile } from "../../../store/slices/authSlice";
-import { useCreateCommentMutation } from "../../../store/api/postsApi";
+
+interface ApiError {
+  status?: number;
+  data?: {
+    conteudo?: string[];
+    detail?: string;
+    details?: string;
+    [key: string]: unknown;
+  };
+}
 
 interface CreateCommentProps {
   postId: number;
@@ -20,8 +30,7 @@ export function CreateComment({ postId }: CreateCommentProps) {
   const [content, setContent] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [createComment, { isLoading }] = useCreateCommentMutation();
-
-  // const { foto } = useSelector(selectUserProfile);
+  const { foto } = useSelector(selectUserProfile);
 
   async function handleComment() {
     if (!content.trim()) return;
@@ -29,10 +38,15 @@ export function CreateComment({ postId }: CreateCommentProps) {
     try {
       // Passa o conteúdo e o ID do post, conforme exigido pelo backend
       await createComment({ conteudo: content.trim(), post: postId }).unwrap();
-      setContent(""); // Limpa o campo após o sucesso
+      setContent("");
+      const el = document.getElementById(
+        "comment-textarea",
+      ) as HTMLTextAreaElement | null;
+      if (el) el.style.height = "auto";
     } catch (error) {
       console.error("Erro ao enviar o comentário", error);
-      const errData = (error as any)?.data;
+      const err = error as ApiError;
+      const errData = err?.data;
 
       const apiError =
         errData?.conteudo?.[0] ||
@@ -45,11 +59,12 @@ export function CreateComment({ postId }: CreateCommentProps) {
 
   return (
     <CreateCommentContainer>
-      <CommentAvatar />
+      <CommentAvatar $foto={foto} />
       <InputWrapper>
         <CommentTextarea
           placeholder="Digite sobre oque quiser..."
           rows={1}
+          value={content}
           onChange={(e) => {
             setContent(e.target.value);
             setErrorMsg("");

@@ -13,7 +13,7 @@ export const CardContainer = styled.div`
   text-align: center;
 `;
 
-export const CardAvatar = styled.div<{ $foto?: string }>`
+export const CardAvatar = styled.div<{ $foto: string | null }>`
   width: 72px;
   height: 72px;
   border-radius: 50%;

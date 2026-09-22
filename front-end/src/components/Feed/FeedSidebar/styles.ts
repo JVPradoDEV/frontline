@@ -36,6 +36,40 @@ export const LogoMark = styled.div`
   height: 46px;
 `;
 
+// ── Popup de logout ────────────────────────────────────────────────────────────
+export const LogoutPopup = styled.div`
+  position: absolute;
+  bottom: calc(100% + 8px); /* aparece acima do BottomSection */
+  left: 0;
+  right: 0;
+  background-color: ${colors.black};
+  border: 1px solid ${colors.anotherHim};
+  border-radius: 12px;
+  padding: 8px;
+  z-index: 20;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.5);
+`;
+
+export const LogoutButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: none;
+  border: none;
+  color: ${colors.lightRed};
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background-color: rgba(224, 82, 82, 0.1);
+  }
+`;
+
 // ── Navegação ─────────────────────────────────────────────────────────────────
 export const NavList = styled.ul`
   list-style: none;
@@ -74,7 +108,7 @@ export const NavLabel = styled.span`
 `;
 
 // ── Rodapé ─────────────────────────────────────────────────────────────────────
-export const BottomSection = styled.div`
+export const BottomSection = styled.div<{ $active?: boolean }>`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -82,6 +116,8 @@ export const BottomSection = styled.div`
   border-radius: 9999px;
   cursor: pointer;
   transition: background-color 0.15s ease;
+  background-color: ${({ $active }) =>
+    $active ? "rgba(255, 255, 255, 0.08)" : "transparent"};
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.08);

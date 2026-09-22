@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   CreatePostContainer,
   SelfAvatar,
@@ -9,13 +10,13 @@ import {
 } from "./styles";
 import { useCreatePostMutation } from "../../../store/api/postsApi";
 import { ErrorMessage } from "../../Post/CreateComment/styles";
+import { selectUserProfile } from "../../../store/slices/authSlice";
 
 export function CreatePost() {
   const [content, setContent] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [createPost, { isLoading }] = useCreatePostMutation();
-
-  // const { foto } = useSelector(selectUserProfile);
+  const { foto } = useSelector(selectUserProfile);
 
   async function handlePost() {
     if (!content.trim()) return;
@@ -40,7 +41,7 @@ export function CreatePost() {
 
   return (
     <CreatePostContainer>
-      <SelfAvatar />
+      <SelfAvatar $foto={foto} />
       <InputWrapper>
         <PostTextarea
           placeholder="Digite sobre oque quiser..."

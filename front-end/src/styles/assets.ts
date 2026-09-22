@@ -4,7 +4,7 @@ export const assets = {
   backgroundMainAlt: "/background/background_principal_alt.png",
   backgroundPerfil: "/background/background_perfil.png",
 
-  // Imagens/Logos:
+  /// Imagens/Logos:
   logo: "/Logo.png",
   logo2: "/Logo2.png",
 };

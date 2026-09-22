@@ -12,7 +12,6 @@ import {
   ActionCount,
 } from "./styles";
 import { CommentIcon, LikeIcon, ProfileIcon } from "../../../styles/svgs";
-import { colors } from "../../../styles/colors";
 import {
   useLikeMutation,
   useUnlikeMutation,
@@ -26,7 +25,7 @@ interface PostProps {
   conteudo: string;
   n_comentarios: number;
   n_likes: number;
-  foto?: string;
+  foto?: string | null;
   deu_like: boolean;
 }
 
@@ -38,6 +37,7 @@ export function PostCard({
   n_comentarios,
   n_likes,
   deu_like,
+  foto,
 }: PostProps) {
   const navigate = useNavigate();
 
@@ -80,7 +80,7 @@ export function PostCard({
 
   return (
     <PostCardContainer onClick={() => navigate(`/feed/${id}`)}>
-      <PostAvatar $color={colors.mockColor} />
+      <PostAvatar $foto={foto} />
 
       <PostBody>
         <PostHeader>

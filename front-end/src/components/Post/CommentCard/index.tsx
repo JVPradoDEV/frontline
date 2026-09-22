@@ -13,7 +13,6 @@ import {
   LikeBtn,
   LikeCount,
 } from "./styles";
-import { colors } from "../../../styles/colors";
 import {
   useLikeMutation,
   useUnlikeMutation,
@@ -64,7 +63,7 @@ export function CommentCard({ comment }: CommentCardProps) {
 
   return (
     <CommentCardContainer>
-      <CommentAvatar $color={colors.mockColor} />
+      <CommentAvatar $foto={autor.foto} />
 
       <CommentBody>
         <CommentHeader>

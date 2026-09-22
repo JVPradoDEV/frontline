@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { FeedSidebar } from "../../components/Feed/FeedSidebar";
 import { UserCard } from "../../components/Search/UserCard";
-import { useLazySearchUsersQuery } from "../../store/api/usersApi";
+import {
+  useLazySearchUsersQuery,
+  useGetAllUsersQuery,
+} from "../../store/api/usersApi";
 import {
   GlobalBackground,
   PageLayout,
@@ -12,6 +15,7 @@ import {
   SearchButton,
   ResultsGrid,
   FeedbackMsg,
+  SectionTitle,
 } from "./styles";
 import { SearchIcon } from "../../styles/svgs";
 
@@ -20,8 +24,17 @@ export function EncontrarPage() {
 
   const [
     triggerSearch,
-    { data: users, isLoading, isFetching, isError, isUninitialized },
+    {
+      data: searchResults,
+      isLoading: searching,
+      isFetching,
+      isError,
+      isUninitialized,
+    },
   ] = useLazySearchUsersQuery();
+
+  // Recomendações: carregadas imediatamente ao entrar na página
+  const { data: allUsers = [], isLoading: loadingAll } = useGetAllUsersQuery();
 
   function handleSearch() {
     if (!query.trim()) return;
@@ -32,8 +45,14 @@ export function EncontrarPage() {
     if (e.key === "Enter") handleSearch();
   }
 
-  const loading = isLoading || isFetching;
-  const hasResult = !isUninitialized && !loading;
+  // Limpa a busca ao apagar o campo
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setQuery(e.target.value);
+  }
+
+  const loading = searching || isFetching;
+  const showSearch = !isUninitialized; // já buscou algo
+  const showAllUsers = isUninitialized && !loadingAll; // ainda não buscou
 
   return (
     <>
@@ -51,7 +70,7 @@ export function EncontrarPage() {
               type="text"
               placeholder="@usuario"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={handleInputChange}
               onKeyDown={handleKeyDown}
             />
             <SearchButton
@@ -63,22 +82,53 @@ export function EncontrarPage() {
             </SearchButton>
           </SearchBar>
 
-          {/* Estados de feedback */}
-          {loading && <FeedbackMsg>Buscando...</FeedbackMsg>}
-          {isError && (
-            <FeedbackMsg>Erro ao buscar usuários. Tente novamente.</FeedbackMsg>
-          )}
-          {hasResult && !isError && users?.length === 0 && (
-            <FeedbackMsg>Nenhum usuário encontrado para "{query}".</FeedbackMsg>
+          {/* ── Recomendações (antes de qualquer busca) ──────────────────── */}
+          {showAllUsers && (
+            <>
+              <SectionTitle>Recomendações para você:</SectionTitle>
+              {loadingAll && <FeedbackMsg>Carregando...</FeedbackMsg>}
+              {allUsers.length === 0 && !loadingAll && (
+                <FeedbackMsg>Nenhum usuário disponível.</FeedbackMsg>
+              )}
+              <ResultsGrid>
+                {allUsers.map((user) => (
+                  <UserCard key={user.username} {...user} />
+                ))}
+              </ResultsGrid>
+            </>
           )}
 
-          {/* Grid de resultados */}
-          {hasResult && !isError && users && users.length > 0 && (
-            <ResultsGrid>
-              {users.map((user) => (
-                <UserCard key={user.username} {...user} />
-              ))}
-            </ResultsGrid>
+          {/* ── Resultados da busca ───────────────────────────────────────── */}
+          {showSearch && (
+            <>
+              {loading && <FeedbackMsg>Buscando...</FeedbackMsg>}
+
+              {isError && (
+                <FeedbackMsg>
+                  Erro ao buscar usuários. Tente novamente.
+                </FeedbackMsg>
+              )}
+
+              {!loading && !isError && searchResults?.length === 0 && (
+                <FeedbackMsg>
+                  Nenhum usuário encontrado para "{query}".
+                </FeedbackMsg>
+              )}
+
+              {!loading &&
+                !isError &&
+                searchResults &&
+                searchResults.length > 0 && (
+                  <>
+                    <SectionTitle>Resultados para "{query}":</SectionTitle>
+                    <ResultsGrid>
+                      {searchResults.map((user) => (
+                        <UserCard key={user.username} {...user} />
+                      ))}
+                    </ResultsGrid>
+                  </>
+                )}
+            </>
           )}
         </MainContent>
       </PageLayout>

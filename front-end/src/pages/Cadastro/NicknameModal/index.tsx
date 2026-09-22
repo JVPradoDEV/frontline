@@ -13,9 +13,14 @@ import {
 interface NicknameModalProps {
   onConfirm: (nickname: string) => void;
   onSkip: () => void;
+  isLoading?: boolean;
 }
 
-export function NicknameModal({ onConfirm, onSkip }: NicknameModalProps) {
+export function NicknameModal({
+  onConfirm,
+  onSkip,
+  isLoading,
+}: NicknameModalProps) {
   const [nickname, setNickname] = useState("");
 
   return (
@@ -32,16 +37,19 @@ export function NicknameModal({ onConfirm, onSkip }: NicknameModalProps) {
           placeholder="Ex: João Silva"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
+          disabled={isLoading}
         />
 
         <ModalActions>
           <ConfirmButton
             onClick={() => onConfirm(nickname)}
-            disabled={!nickname.trim()}
+            disabled={!nickname.trim() || isLoading}
           >
-            Confirmar
+            {isLoading ? "Salvando..." : "Confirmar"}
           </ConfirmButton>
-          <SkipButton onClick={onSkip}>Deixar para depois</SkipButton>
+          <SkipButton onClick={onSkip} disabled={isLoading}>
+            Deixar para depois
+          </SkipButton>
         </ModalActions>
       </ModalCard>
     </ModalOverlay>

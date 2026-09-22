@@ -34,11 +34,17 @@ export function ProfilePage() {
   const [activeTab, setActiveTab] = useState<ActiveTab>(null);
 
   const { data: userInfo, isLoading: loadingProfile } =
-    useGetPublicUserProfileQuery(username!, { skip: !username });
+    useGetPublicUserProfileQuery(username!, {
+      skip: !username,
+      refetchOnMountOrArgChange: true,
+    });
 
   const { data: posts = [], isLoading: loadingPosts } = useGetUserPostsQuery(
     username!,
-    { skip: !username },
+    {
+      skip: !username,
+      refetchOnMountOrArgChange: true,
+    },
   );
 
   const { data: followers = [], isLoading: loadingFollowers } =
@@ -58,7 +64,6 @@ export function ProfilePage() {
       <GlobalBackground />
       <ProfileLayout>
         <FeedSidebar />
-
         <ProfileMain>
           <ProfilePageHeader>
             <BackButton onClick={() => navigate(-1)} aria-label="Voltar">
@@ -80,6 +85,7 @@ export function ProfilePage() {
           {!isLoading && userInfo && (
             <>
               <ProfileHeader
+                key={username}
                 user={userInfo}
                 isOwnProfile={isOwnProfile}
                 activeTab={activeTab}
