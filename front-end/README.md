@@ -44,6 +44,16 @@ Certifique-se de ter o **Node.js** e o gerenciador de pacotes **NPM** instalados
    ```
    Após executar este comando, o terminal exibirá a URL local (geralmente **http://localhost:5173/**) onde você pode acessar a aplicação no seu navegador.
 
+## ⚠️- ATENÇÃO! Em caso de ser usado outra API além da online já predefinida, mude o BASE_URL localizado em:
+```
+\frontline\front-end\src\store\api\constants.ts
+```
+   Altere o valor para o URL da API criada localmente.
+Exemplo:
+```
+export const BASE_URL = "https://alternate-api-backend.vercel.app";
+```
+
 ## 📦- Build para Produção
 
 Quando terminar o desenvolvimento e quiser preparar o projeto para o deploy, gere a versão otimizada com o comando:
