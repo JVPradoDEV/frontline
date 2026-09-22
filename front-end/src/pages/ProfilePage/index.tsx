@@ -47,17 +47,33 @@ export function ProfilePage() {
     },
   );
 
-  const { data: followers = [], isLoading: loadingFollowers } =
-    useGetUserFollowersQuery(username!, {
-      skip: !username || activeTab !== "seguidores",
-    });
+  const {
+    data: followers = [],
+    isLoading: loadingFollowers,
+    refetch: refetchFollowers,
+  } = useGetUserFollowersQuery(username!, {
+    skip: !username || activeTab !== "seguidores",
+  });
 
-  const { data: followeds = [], isLoading: loadingFolloweds } =
-    useGetUserFollowedsQuery(username!, {
-      skip: !username || activeTab !== "seguindo",
-    });
+  const {
+    data: followeds = [],
+    isLoading: loadingFolloweds,
+    refetch: refetchFolloweds,
+  } = useGetUserFollowedsQuery(username!, {
+    skip: !username || activeTab !== "seguindo",
+  });
 
   const isLoading = loadingProfile || loadingPosts;
+
+  function handleTabChange(tab: ActiveTab) {
+    setActiveTab(tab);
+
+    if (tab === "seguidores") {
+      refetchFollowers();
+    } else if (tab === "seguindo") {
+      refetchFolloweds();
+    }
+  }
 
   return (
     <>
@@ -89,7 +105,7 @@ export function ProfilePage() {
                 user={userInfo}
                 isOwnProfile={isOwnProfile}
                 activeTab={activeTab}
-                onTabChange={setActiveTab}
+                onTabChange={handleTabChange}
               />
 
               {activeTab === "seguidores" && (

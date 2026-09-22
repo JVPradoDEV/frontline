@@ -1,15 +1,17 @@
 import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { selectIsAuthenticated } from "./store/slices/authSlice";
+import { useCurrentUserProfile } from "./hooks/useCurrentUserProfile";
 import { LoginPage } from "./pages/Login";
 import { Cadastro } from "./pages/Cadastro";
 import { FeedPage } from "./pages/Feed";
 import { PostDetailPage } from "./pages/PostDetail";
 import { ProfilePage } from "./pages/ProfilePage";
 import { EncontrarPage } from "./pages/Buscar";
-import { selectIsAuthenticated } from "./store/slices/authSlice";
 
 function ProtectedRoute() {
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  useCurrentUserProfile();
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
 }

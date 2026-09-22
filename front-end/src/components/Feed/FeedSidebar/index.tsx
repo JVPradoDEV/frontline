@@ -37,8 +37,9 @@ export function FeedSidebar() {
   const { logout } = useAuth();
   const [showLogout, setShowLogout] = useState(false);
   useCurrentUserProfile();
-
   const { username, foto } = useSelector(selectUserProfile);
+
+  const isProfileLoading = !username;
 
   // "Meu Perfil" aponta para o perfil do usuário logado
   const profilePath = `/perfil/${username || ""}`;
@@ -57,21 +58,31 @@ export function FeedSidebar() {
         <LogoSection>
           <Link to="/feed" style={{ textDecoration: "none" }}>
             <LogoMark>
-              <img src={assets.logo2} />
+              <img src={assets.logo2} alt="Logo" />
             </LogoMark>
           </Link>
         </LogoSection>
 
         <nav>
           <NavList>
-            {navItemsWithProfile.map(({ label, icon, to }) => (
-              <li key={label}>
-                <NavItem to={to} $isActive={pathname === to}>
-                  <NavIcon>{icon}</NavIcon>
-                  <NavLabel>{label}</NavLabel>
-                </NavItem>
-              </li>
-            ))}
+            {navItemsWithProfile.map(({ label, icon, to }) => {
+              const isDisabled = label === "Meu Perfil" && isProfileLoading;
+
+              return (
+                <li key={label}>
+                  <NavItem
+                    to={isDisabled ? "#" : to}
+                    $isActive={pathname === to}
+                    style={
+                      isDisabled ? { pointerEvents: "none", opacity: 0.5 } : {}
+                    }
+                  >
+                    <NavIcon>{icon}</NavIcon>
+                    <NavLabel>{isDisabled ? "Carregando..." : label}</NavLabel>
+                  </NavItem>
+                </li>
+              );
+            })}
           </NavList>
         </nav>
       </div>
@@ -88,7 +99,7 @@ export function FeedSidebar() {
             <LogoutPopup>
               <LogoutButton onClick={handleLogout}>
                 <LogoutIcon />
-                Sair da conta
+                Sair
               </LogoutButton>
             </LogoutPopup>
           </>

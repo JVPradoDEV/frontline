@@ -9,6 +9,7 @@ export const PostFocusContainer = styled.div`
 
 export const FocusHeader = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 12px;
   margin-bottom: 16px;
@@ -47,4 +48,36 @@ export const FocusContent = styled.p`
   word-break: break-word;
   overflow-wrap: anywhere;
   overflow: hidden;
+`;
+
+export const FocusLikeBtn = styled.button<{ $liked?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: ${({ $liked }) => ($liked ? colors.lightRed : colors.gray)};
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    color: ${colors.lightRed};
+
+    svg {
+      transform: scale(1.1);
+    }
+  }
+
+  svg {
+    width: 28px;
+    height: 28px;
+    fill: ${({ $liked }) => ($liked ? colors.lightRed : "none")};
+    stroke: ${({ $liked }) => ($liked ? colors.lightRed : "currentColor")};
+    transition: transform 0.2s ease-in-out;
+  }
+`;
+
+export const FocusLikeCount = styled.span`
+  font-size: 16px;
+  font-weight: 600;
 `;
