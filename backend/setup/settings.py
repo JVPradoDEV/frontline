@@ -82,7 +82,7 @@ CORS_ALLOW_CREDENTIALS = True
 DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL'),
-        conn_max_age=0,       # Mantém a conexão aberta por até 10 minutos (bom para performance)
+        conn_max_age=0,       # Mantém a conexão aberta por até X minutos
         ssl_require=True        # Exige SSL (necessário para o Supabase)
     )
 }
@@ -108,7 +108,7 @@ STORAGES = {
 AWS_ACCESS_KEY_ID = os.environ.get('SUPABASE_S3_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = os.environ.get('SUPABASE_S3_SECRET_KEY')
 
-AWS_STORAGE_BUCKET_NAME = 'fotos-perfil'
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
 AWS_S3_ENDPOINT_URL = os.environ.get('SUPABASE_S3_ENDPOINT')
 AWS_S3_REGION_NAME = os.environ.get('SUPABASE_S3_REGION')
