@@ -29,7 +29,7 @@ Certifique-se de ter o **Node.js** e o gerenciador de pacotes **NPM** instalados
 
 ### Instalação e Execução
 
-## 1. Clonar o projeto
+1. Clonar o projeto
 ```bash
 git clone URL_DO_REPOSITORIO
 cd frontend
